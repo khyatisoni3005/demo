@@ -143,21 +143,19 @@
     <script>
         function getProductList() {
             return JSON.parse(localStorage.getItem("productlist")) || [];
-
         }
         function getCartItems() {
 
             return JSON.parse(localStorage.getItem("cart")) || []
-
         }
         function setCartItem(cart) {
             return localStorage.setItem("cart", JSON.stringify(cart))
         }
-        function display() {
+
+        function displayProductList() {
             let productlist = getProductList()
             productlist.map((val, ind) => {
                 let col = document.createElement("div")
-
                 col.classList.add("col-3")
                 col.innerHTML = `
                 <img src="css/1440x400_Drama_.webp" alt="">
@@ -170,13 +168,11 @@
 
             })
         }
+        displayProductList()
         function addtocart(id) {
             let productlist = getProductList()
-            let cart = getCartItem()
+            let cart = getCartItems()
             let product = productlist.find((p) => p.id == id)
-            console.log("product", product);
-            console.log("product list", productlist);
-
             cart.push({
                 ...product,
                 quantity: 1,
@@ -189,21 +185,16 @@
 
         function loadcart() {
             let cart = getCartItems()
-            // console.log();
             let count = cart.length
             document.getElementById("count").innerHTML = count
-            // location.reload()
         }
-        display()
         loadcart()
 
-
-
+        // add to cart 
 
         function getCartItem() {
             return JSON.parse(localStorage.getItem("cart")) || [];
         }
-
 
         function displayCart() {
             let cart = getCartItem()
@@ -236,14 +227,12 @@
         }
 
         function removeitem(id) {
-            console.log(id);
             let cart = getCartItem()
             let updateitemlist = cart.filter((a) => {
                 return a.id != id
             })
             localStorage.setItem("cart", JSON.stringify(updateitemlist))
             displayCart()
-
         }
 
         function calculateTotal() {
@@ -274,7 +263,6 @@
             })
             localStorage.setItem("cart", JSON.stringify(updatedCart))
             displayCart()
-
             calculateTotal();
         }
         calculateTotal();
