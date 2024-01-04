@@ -1,0 +1,9 @@
+/*! @version pwa-studio: 0.0.1, @magento/venia-ui: ~10.1.0, @magento/upward-security-headers: ~1.0.13, @magento/pwa-theme-venia: ~1.4.0, @magento/pwa-buildpack: ~11.4.1, @magento/peregrine: ~13.0.1, @magento/pagebuilder: ~8.1.0, @magento/eslint-config: ~1.5.0, @magento/babel-preset-peregrine: ~1.2.2, @apollo/client: ~3.5.0 */
+(window.webpackJsonp=window.webpackJsonp||[]).push([[80],{OIKL:function(t,r,n){"use strict"
+var i=n("JPst"),o=n.n(i)()(function(t){return t[1]})
+o.push([t.i,".html-root-Uwa {\n    word-wrap: break-word;\n}\n.html-root-Uwa img {\n    max-width: 100%;\n}\n",""]),o.locals={root:"html-root-Uwa"},r.a=o},f8QE:function(t,r,n){"use strict"
+n.r(r),n.d(r,"default",function(){return u})
+var i=n("q1tI"),o=n.n(i),a=n("LboF"),e=n.n(a),s=n("OIKL"),g={injectType:"singletonStyleTag",insert:"head",singleton:!0},d=(e()(s.a,g),s.a.locals||{}),p=n("y1Xp"),l=n("17x9"),m=n("Ty5D"),c=n("xvLa"),b=t=>({__html:t}),h=t=>{var r=Object(p.a)(d,t.classes),{html:n,textAlign:i,border:a,borderColor:e,borderWidth:s,borderRadius:g,marginTop:l,marginRight:h,marginBottom:u,marginLeft:w,paddingTop:f,paddingRight:T,paddingBottom:L,paddingLeft:y,cssClasses:R=[]}=t,O={textAlign:i,border:a,borderColor:e,borderWidth:s,borderRadius:g,marginTop:l,marginRight:h,marginBottom:u,marginLeft:w,paddingTop:f,paddingRight:T,paddingBottom:L,paddingLeft:y},j=Object(m.g)(),v=t=>{Object(c.a)(j,t)}
+return o.a.createElement("div",{style:O,className:[r.root,...R].join(" "),dangerouslySetInnerHTML:b(n),onClick:v,onKeyDown:v,role:"presentation"})}
+h.propTypes={classes:Object(l.shape)({root:l.string}),html:l.string,textAlign:l.string,border:l.string,borderColor:l.string,borderWidth:l.string,borderRadius:l.string,marginTop:l.string,marginRight:l.string,marginBottom:l.string,marginLeft:l.string,paddingTop:l.string,paddingRight:l.string,paddingBottom:l.string,cssClasses:Object(l.arrayOf)(l.string)}
+var u=h}}])

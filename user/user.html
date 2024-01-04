@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USER</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/font.css">
+    <link rel="stylesheet" href="css/all.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+</head>
+
+<style>
+    input {
+        margin-left: 200px;
+        margin-top: 20px;
+        padding: 5px 200px;
+        text-transform: capitalize;
+        border-radius: 12px;
+
+    }
+
+    img {
+        width: 300px;
+        height: 266px;
+        margin-top: 10px;
+        border-radius: 12px;
+    }
+
+    .col-3 {
+        margin-left: 30px;
+        width: 22%;
+        margin-top: 10px;
+        box-shadow: 0px 0px 10px 0px black;
+        border-radius: 12px;
+    }
+
+    h2 {
+
+        text-transform: uppercase;
+        font-size: 20px;
+        font-weight: 800;
+        letter-spacing: 1px;
+        margin: 10px 0px;
+    }
+
+    button {
+        padding: 3px 20px;
+        border-radius: 12px;
+        margin: 10px 0px;
+        text-transform: capitalize;
+    }
+
+    .row {
+        margin-left: 15px;
+        margin-top: 20px;
+
+    }
+
+    .logo {
+        width: 160px;
+        height: 50px;
+    }
+</style>
+
+
+<body>
+
+    <div class="header">
+        <div class="row">
+            <div class="col-2">
+                <img src="css/logo.svg" class="logo" alt="">
+            </div>
+            <div class="col-8">
+                <div class="search">
+                    <i class="fa-solid fa-magnifying-glass position-absolute" style="margin-top: 31px;
+                    margin-left: 207px;"></i>
+                    <input type="text" placeholder="search">
+                </div>
+            </div>
+            <div class="col-2"><i class="fa-solid fa-phone" style="    margin-top: 26px;
+                font-size: 26px; margin-right: 20px;"></i><i class="fa-solid fa-user" style="    margin-top: 26px;
+                font-size: 26px; margin-right: 20px;"></i>
+
+
+                <div class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+                    aria-controls="offcanvasRight" style="vertical-align: baseline; padding: 0px;"><i style="    margin-top: 26px;
+                    font-size: 26px;" class="fa-solid fa-cart-shopping"></i><span id="count"
+                        style="position: absolute; margin-top: 5px; margin-left: -10px; font-size: 20px; background-color: rgb(119, 119, 211,0.9); padding: 2px 10px; border-radius: 50%;">0</span>
+                </div>
+
+                <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight"
+                    aria-labelledby="offcanvasRightLabel">
+                    <div class="offcanvas-header">
+                        <h5 id="offcanvasRightLabel">Cart Items</h5>
+                        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body">
+                        <div class="box">
+                            <div class="row">
+                                <div style="background-color: rgb(255, 255, 255); margin: 0px 13px;">
+
+
+                                    <div id="cart-item" style="margin-bottom: 20px;"></div>
+
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <h2 style="font-weight: 800; text-transform: capitalize;
+                                    font-size: 25px;">subtotal:- ₹ <span id="total" style="font-weight: 500;"></span>
+                        </h2>
+                        <button class="btn1">proceed to buy</button>
+
+                    </div>
+                </div>
+
+                <!-- <i style="    margin-top: 26px;
+                font-size: 26px;" class="fa-solid fa-cart-shopping" onclick="sendcart()"></i><span id="count"
+                    style="position: absolute; margin-top: 5px; margin-left: -10px; font-size: 20px; background-color: rgb(119, 119, 211,0.9); padding: 2px 10px; border-radius: 50%;">0</span> -->
+            </div>
+
+        </div>
+    </div>
+
+    <div class="main-area">
+        <div id="box">
+            <div class="row" id="row">
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <script>
+        function getProductList() {
+            return JSON.parse(localStorage.getItem("productlist")) || [];
+
+        }
+        function getCartItems() {
+
+            return JSON.parse(localStorage.getItem("cart")) || []
+
+        }
+        function setCartItem(cart) {
+            return localStorage.setItem("cart", JSON.stringify(cart))
+        }
+        function display() {
+            let productlist = getProductList()
+            productlist.map((val, ind) => {
+                let col = document.createElement("div")
+
+                col.classList.add("col-3")
+                col.innerHTML = `
+                <img src="css/1440x400_Drama_.webp" alt="">
+                <h2>${val.productname}</h2>
+                <p>${val.productdec}</p>
+                <p>${val.productprice}</p>
+                <button onclick=addtocart(${val.id})>add to cart</button> `
+                let row = document.getElementById("row")
+                row.appendChild(col)
+
+            })
+        }
+        function addtocart(id) {
+            let productlist = getProductList()
+            let cart = getCartItem()
+            let product = productlist.find((p) => p.id == id)
+            console.log("product", product);
+            console.log("product list", productlist);
+
+            cart.push({
+                ...product,
+                quantity: 1,
+                cartProductId: new Date().getTime().toString()
+            })
+            setCartItem(cart)
+            displayCart();
+            loadcart()
+        }
+
+        function loadcart() {
+            let cart = getCartItems()
+            // console.log();
+            let count = cart.length
+            document.getElementById("count").innerHTML = count
+            // location.reload()
+        }
+        display()
+        loadcart()
+
+
+
+
+        function getCartItem() {
+            return JSON.parse(localStorage.getItem("cart")) || [];
+        }
+
+
+        function displayCart() {
+            let cart = getCartItem()
+            let cartitems = ''
+            for (let i = 0; i < cart.length; i++) {
+                let cartitem = cart[i]
+                cartitems = cartitems + ` <div class="box" style="display: flex;">
+                            <div class="" style="box-shadow: 0px 0px 10px 0px; border-radius:12px;">
+                                <img src="css/1440x400_Drama_.webp" style="height: 150px; width: 300px;margin-top:0px;" alt="">
+                            </div>
+                          
+                            
+                        </div>
+                        <h1 style="font-size: 30px; font-weight: 800; display: inline-block;">${cartitem.productname}</h1><br>
+                        <span style="font-weight: 800;">${cartitem.productprice}</span>
+                        <select onchange="updateQuantity(${cartitem.cartProductId}, this.value)" id="select-${cartitem.cartProductId}"
+                            style="margin-left: 130px; padding: 3px 10px; background-color: rgb(201, 201, 201); border-radius: 7px; box-shadow: 0px 0px 4px 0px black;">
+                            <option ${parseInt(cartitem.quantity) === 1 ? 'selected' : ''} value="1">1</option>
+                            <option ${parseInt(cartitem.quantity) === 2 ? 'selected' : ''} value="2">2</option>
+                            <option ${parseInt(cartitem.quantity) === 3 ? 'selected' : ''} value="3"> 3</option>
+                            <option ${parseInt(cartitem.quantity) === 4 ? 'selected' : ''} value="4"> 4</option>
+                            <option ${parseInt(cartitem.quantity) === 5 ? 'selected' : ''} value="5"> 5</option>
+                            <option ${parseInt(cartitem.quantity) === 6 ? 'selected' : ''} value="6"> 6</option>
+                            <option ${parseInt(cartitem.quantity) === 7 ? 'selected' : ''} value="7"> 7</option>
+                            <option ${parseInt(cartitem.quantity) === 8 ? 'selected' : ''} value="8"> 8</option>
+                        </select>
+                        <button style="border: 0px; margin-left: 20px;" onclick="removeitem(${cartitem.id})"><i class="fa-solid fa-trash"></i></button><hr>`
+            }
+            document.getElementById("cart-item").innerHTML = cartitems
+        }
+
+        function removeitem(id) {
+            console.log(id);
+            let cart = getCartItem()
+            let updateitemlist = cart.filter((a) => {
+                return a.id != id
+            })
+            localStorage.setItem("cart", JSON.stringify(updateitemlist))
+            displayCart()
+
+        }
+
+        function calculateTotal() {
+            let cart = getCartItem()
+            console.log("calculateTotal cart", cart);
+            let total = 0;
+            for (let i = 0; i < cart.length; i++) {
+                let cartProduct = cart[i]
+                console.log("cartProduct", cartProduct);
+                let quantity = parseInt(cartProduct.quantity);
+                total += parseInt(cartProduct.productprice) * quantity;
+            }
+            console.log(total, "total");
+            document.getElementById("total").innerHTML = total
+        }
+
+        function updateQuantity(cartProductId, quantity) {
+
+            let cart = getCartItem()
+            const updatedCart = cart.map((p) => {
+                if (p.cartProductId.toString() == cartProductId.toString()) {
+                    return {
+                        ...p,
+                        quantity: parseInt(quantity),
+                    }
+                }
+                return p;
+            })
+            localStorage.setItem("cart", JSON.stringify(updatedCart))
+            displayCart()
+
+            calculateTotal();
+        }
+        calculateTotal();
+        displayCart()
+        removeitem()
+    </script>
+
+
+
+
+
+
+    <script src="js/bootstrap.bundle.min.js"></script>
+</body>
+
+
+
+
+</html>

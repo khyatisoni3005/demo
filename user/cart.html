@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cart</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/all.css">
+</head>
+<style>
+    body {
+        font-family: sans-serif;
+        background-color: rgb(233, 233, 233);
+    }
+
+    p {
+        text-transform: capitalize;
+        font-size: 18px;
+        opacity: 0.8;
+        letter-spacing: 1px;
+        margin: 10px;
+    }
+
+    h1 {
+        text-transform: capitalize;
+        margin: 10px;
+    }
+
+    h5 {
+        text-transform: capitalize;
+        text-align: right;
+        margin: 0px 0px;
+        margin-right: 8px;
+    }
+
+    .dec-box {
+        background-color: white;
+        margin: 10px 10px;
+        display: flex;
+
+    }
+
+    .dec-box p {
+        margin-top: 40px;
+        margin-left: 80px;
+        font-size: 16px;
+    }
+
+    .dec-box img {
+        height: 100px;
+    }
+
+    .box {
+        margin: 10px 10px;
+
+
+    }
+
+    .row {
+        margin-bottom: 10px;
+    }
+
+    .col-3 {
+        width: 21%;
+    }
+
+    .box-1 {
+        background-color: blueviolet;
+    }
+
+    .btn1 {
+
+        margin-top: 30px;
+        padding: 4px 80px;
+        margin-left: 6px;
+        border-radius: 12px;
+        background-color: rgb(175, 184, 1);
+        text-transform: capitalize;
+        font-size: 16px;
+    }
+
+    .btn {
+        margin-top: 30px;
+        padding: 4px 80px;
+        margin-right: 9px;
+        border-radius: 12px;
+        text-transform: capitalize;
+        font-size: 16px;
+    }
+</style>
+
+<body>
+
+    <div class="dec-box">
+        <img src="css/CBCC_maple_2._CB662107477_.jpg" alt="">
+        <p>
+            Get a lifetime-free credit card approved in 30 minutes. Enjoy <span style="font-weight: 900;">5% cash back(
+                <span style="color: rgb(102, 0, 0)">rs 134.43 </span>) apply now</span></p>
+    </div>
+
+
+
+    <div class="box">
+        <div class="row">
+            <div class="col-9" style="background-color: rgb(255, 255, 255); margin: 0px 13px;">
+                <h1>Shopping cart</h1>
+                <p>select all items</p>
+                <h5>price</h5>
+                <hr>
+
+                <div id="cart-item" style="margin-bottom: 20px;"></div>
+
+            </div>
+            <div class="col-3" style="background-color: rgb(255, 255, 255); margin: 0px 13px;">
+                <h2 style="font-weight: 800; text-transform: capitalize;
+                font-size: 25px;">subtotal:- ₹ <span id="total" style="font-weight: 500;"></span></h2>
+                <button class="btn1">proceed to buy</button>
+            </div>
+
+        </div>
+    </div>
+    <script>
+
+        function getCartItem() {
+            return JSON.parse(localStorage.getItem("cart"))
+        }
+
+
+        function displayCart() {
+            let cart = getCartItem()
+            let cartitems = ''
+            for (let i = 0; i < cart.length; i++) {
+                let cartitem = cart[i]
+                cartitems = cartitems + ` <div class="box" style="display: flex;">
+                            <div class="col-3">
+                                <img src="css/1440x400_Drama_.webp" style="height: 111px; width: 189px;" alt="">
+                            </div>
+                            <div class="col-8">
+                                <p>${cartitem.productdec}</p>
+                            </div>
+                            <div class="col-1" style="margin-left: 91px">
+                                <span style="font-weight: 800;">${cartitem.productprice}</span>
+                            </div>
+                        </div>
+                        <h1 style="font-size: 30px; font-weight: 800; display: inline-block;">${cartitem.productname}</h1>
+                        <select onchange="updateQuantity(${cartitem.cartProductId}, this.value)" id="select-${cartitem.cartProductId}"
+                            style="margin-left: 130px; padding: 3px 10px; background-color: rgb(201, 201, 201); border-radius: 7px; box-shadow: 0px 0px 4px 0px black;">
+                            <option ${parseInt(cartitem.quantity) === 1 ? 'selected' : ''} value="1">1</option>
+                            <option ${parseInt(cartitem.quantity) === 2 ? 'selected' : ''} value="2">2</option>
+                            <option ${parseInt(cartitem.quantity) === 3 ? 'selected' : ''} value="3"> 3</option>
+                            <option ${parseInt(cartitem.quantity) === 4 ? 'selected' : ''} value="4"> 4</option>
+                            <option ${parseInt(cartitem.quantity) === 5 ? 'selected' : ''} value="5"> 5</option>
+                            <option ${parseInt(cartitem.quantity) === 6 ? 'selected' : ''} value="6"> 6</option>
+                            <option ${parseInt(cartitem.quantity) === 7 ? 'selected' : ''} value="7"> 7</option>
+                            <option ${parseInt(cartitem.quantity) === 8 ? 'selected' : ''} value="8"> 8</option>
+                        </select>
+                        <button style="border: 0px; margin-left: 20px;" onclick="removeitem(${cartitem.id})"><i class="fa-solid fa-trash"></i></button><hr>`
+            }
+            document.getElementById("cart-item").innerHTML = cartitems
+        }
+        function removeitem(id) {
+            console.log(id);
+            let cart = getCartItem()
+            let updateitemlist = cart.filter((a) => {
+                return a.id != id
+            })
+            localStorage.setItem("cart", JSON.stringify(updateitemlist))
+            displayCart()
+
+        }
+
+        function calculateTotal() {
+            let cart = getCartItem()
+            let total = 0;
+            for (let i = 0; i < cart.length; i++) {
+                let cartProduct = cart[i]
+                console.log("cartProduct", cartProduct);
+                let quantity = parseInt(cartProduct.quantity);
+                total += parseInt(cartProduct.productprice) * quantity;
+            }
+            console.log(total, "total");
+            document.getElementById("total").innerHTML = total
+        }
+
+        function updateQuantity(cartProductId, quantity) {
+
+            let cart = getCartItem()
+            const updatedCart = cart.map((p) => {
+                if (p.cartProductId.toString() == cartProductId.toString()) {
+                    return {
+                        ...p,
+                        quantity: parseInt(quantity),
+                    }
+                }
+                return p;
+            })
+            localStorage.setItem("cart", JSON.stringify(updatedCart))
+            displayCart()
+            calculateTotal();
+        }
+        calculateTotal();
+        displayCart()
+        removeitem()
+
+    </script>
+</body>
+
+</html>

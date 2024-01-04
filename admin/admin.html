@@ -1,0 +1,1786 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADMIN</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/font.css">
+    
+
+</head>
+<style>
+
+</style>
+
+<body>
+
+
+    <table>
+        <thead>
+            <th>product name</th>
+            <th>product dec</th>
+            <th>product price</th>
+        </thead>
+        <tbody id="tbody">
+
+        </tbody>
+    </table>
+    <input type="text" id="pname">
+    <input type="text" id="pdec">
+    <input type="text" id="pprice">
+    <button onclick="save()">save</button>
+    <br><br><br>
+
+    <input type="text" id="pnam">
+    <input type="text" id="pdece">
+    <input type="text" id="pr">
+    <input type="hidden" id="index">
+    <button onclick="update()">update</button>
+
+
+    <script>
+        const productlist = JSON.parse(localStorage.getItem("productlist")) || [];
+        const tbody = document.getElementById("tbody");
+
+        function save() {
+            let pname = document.getElementById("pname").value;
+            let pdec = document.getElementById("pdec").value;
+            let pprice = document.getElementById("pprice").value;
+            const data = {
+                pname,
+                pdec,
+                pprice
+            }
+            productlist.push(data)
+            localStorage.setItem("productlist", JSON.stringify(productlist))
+            displayData(data)
+            document.getElementById("pname").value = '';
+            document.getElementById("pdec").value = '';
+            document.getElementById("pprice").value = '';
+        }
+
+        productlist.forEach((e, ind) => displayData(e, ind))
+        function displayData(e, ind) {
+            let tr = document.createElement("tr")
+            tr.innerHTML = `
+            <td>${e.pname}</td>
+            <td>${e.pdec}</td>
+            <td>${e.pprice}</td>
+            <button onclick=view(${ind})>view</button>
+            <button onclick=remove(${ind})>remove</button>
+            `
+
+            tbody.appendChild(tr)
+        }
+
+        function remove(ind) {
+            console.log(ind);
+            productlist.splice(ind, 1)
+            localStorage.setItem("productlist", JSON.stringify(productlist))
+            location.reload()
+        }
+        function view(ind) {
+            const alldetail = productlist[ind]
+            document.getElementById("pnam").value = alldetail.pname
+            document.getElementById("pdece").value = alldetail.pdec
+            document.getElementById("pr").value = alldetail.pprice
+            document.getElementById("index").value = ind
+
+
+        }
+        function update() {
+            let name = document.getElementById("pnam").value
+            let dece = document.getElementById("pdece").value
+            let price = document.getElementById("pr").value
+            let ind = document.getElementById("index").value
+
+            const data = {
+                pname: name,
+                pdec: dece,
+                pprice: price
+            }
+            productlist.splice(ind, 1, data)
+            localStorage.setItem("productlist", JSON.stringify(productlist))
+            location.reload()
+
+        }
+
+
+    </script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADMIN</title>
+    <!-- font -->
+    <link rel="stylesheet" href="css/font.css">
+    <!-- icon -->
+    <link rel="stylesheet" href="css/all.css">
+    <!-- favicon -->
+    <link rel="shortcut icon" href="img/buildings.png" type="img/x-icon">
+    <!-- boostrap -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <!-- tailwind -->
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    <!-- flowbite -->
+    <link rel="stylesheet" href="css/flowbite.min.css">
+    <!-- chartjs -->
+    <link rel="stylesheet" href="css/apexcharts.css">
+    <!-- css -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<style>
+    #h2 {
+        font-size: 40px;
+        margin-bottom: 10px;
+    }
+
+    #add {
+        font-size: 19px;
+        letter-spacing: 1px;
+        font-weight: 800;
+        text-transform: capitalize;
+    }
+
+    input {
+        border: 0px;
+        border-bottom: 1px solid black;
+    }
+
+    #save {
+        color: white;
+        background-color: #0958d9;
+        padding: 6px 35px;
+        border-radius: 12px;
+
+    }
+
+    ::placeholder {
+        opacity: 0.6;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 15px;
+    }
+
+    tr {
+        text-transform: capitalize;
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    #remove #view {
+        background-color: #0958d9;
+        margin-top: 28px;
+        color: rgb(64, 64, 64);
+        font-size: 16px;
+        font-weight: 400;
+        margin-left: 5px;
+        padding: 5px 10px;
+        border-radius: 12px;
+        box-shadow: 0px 0px 0px 10px black;
+    }
+
+    #myModal {
+        margin-top: 200px;
+    }
+
+    .modal-title {
+        font-size: 20px;
+        font-weight: 800;
+
+    }
+
+    .modal-body .btn-close {
+        padding: 5px 10px;
+        color: white;
+        border-radius: 12px;
+        margin-top: 6px;
+        margin-left: 20px;
+    }
+
+    .modal-body .btn-update {
+        background-color: #0958d9;
+        padding: 5px 10px;
+        color: white;
+        border-radius: 12px;
+    }
+
+    .modal-body input {
+        padding-right: 20px;
+        font-size: 19px;
+        text-transform: capitalize;
+
+    }
+</style>
+
+<body>
+
+
+    <div id="admin-panel">
+        <input type="checkbox" id="sidebar-toggle">
+
+        <div class="sidebar">
+
+            <div class="sidebar-main" style="padding-top: 30px;">
+                <div class="sidebar-menu">
+                    <div class="menu-head">
+                        <span>DASHBOARD</span>
+                    </div>
+                    <ul>
+                        <li>
+                            <a href="#" class="d-flex default"><span role="img" aria-label="dashboard"
+                                    class="anticon anticon-dashboard"><svg viewBox="64 64 896 896" focusable="false"
+                                        data-icon="dashboard" width="1em" height="1em" fill="currentColor"
+                                        aria-hidden="true">
+                                        <path
+                                            d="M924.8 385.6a446.7 446.7 0 00-96-142.4 446.7 446.7 0 00-142.4-96C631.1 123.8 572.5 112 512 112s-119.1 11.8-174.4 35.2a446.7 446.7 0 00-142.4 96 446.7 446.7 0 00-96 142.4C75.8 440.9 64 499.5 64 560c0 132.7 58.3 257.7 159.9 343.1l1.7 1.4c5.8 4.8 13.1 7.5 20.6 7.5h531.7c7.5 0 14.8-2.7 20.6-7.5l1.7-1.4C901.7 817.7 960 692.7 960 560c0-60.5-11.9-119.1-35.2-174.4zM761.4 836H262.6A371.12 371.12 0 01140 560c0-99.4 38.7-192.8 109-263 70.3-70.3 163.7-109 263-109 99.4 0 192.8 38.7 263 109 70.3 70.3 109 163.7 109 263 0 105.6-44.5 205.5-122.6 276zM623.5 421.5a8.03 8.03 0 00-11.3 0L527.7 506c-18.7-5-39.4-.2-54.1 14.5a55.95 55.95 0 000 79.2 55.95 55.95 0 0079.2 0 55.87 55.87 0 0014.5-54.1l84.5-84.5c3.1-3.1 3.1-8.2 0-11.3l-28.3-28.3zM490 320h44c4.4 0 8-3.6 8-8v-80c0-4.4-3.6-8-8-8h-44c-4.4 0-8 3.6-8 8v80c0 4.4 3.6 8 8 8zm260 218v44c0 4.4 3.6 8 8 8h80c4.4 0 8-3.6 8-8v-44c0-4.4-3.6-8-8-8h-80c-4.4 0-8 3.6-8 8zm12.7-197.2l-31.1-31.1a8.03 8.03 0 00-11.3 0l-56.6 56.6a8.03 8.03 0 000 11.3l31.1 31.1c3.1 3.1 8.2 3.1 11.3 0l56.6-56.6c3.1-3.1 3.1-8.2 0-11.3zm-458.6-31.1a8.03 8.03 0 00-11.3 0l-31.1 31.1a8.03 8.03 0 000 11.3l56.6 56.6c3.1 3.1 8.2 3.1 11.3 0l31.1-31.1c3.1-3.1 3.1-8.2 0-11.3l-56.6-56.6zM262 530h-80c-4.4 0-8 3.6-8 8v44c0 4.4 3.6 8 8 8h80c4.4 0 8-3.6 8-8v-44c0-4.4-3.6-8-8-8z">
+                                        </path>
+                                    </svg></span>
+                                Default
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="d-flex">
+                                <span role="img" aria-label="dot-chart" class="anticon anticon-dot-chart"><svg
+                                        viewBox="64 64 896 896" focusable="false" data-icon="dot-chart" width="1em"
+                                        height="1em" fill="currentColor" aria-hidden="true">
+                                        <path
+                                            d="M888 792H200V168c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v688c0 4.4 3.6 8 8 8h752c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM288 604a64 64 0 10128 0 64 64 0 10-128 0zm118-224a48 48 0 1096 0 48 48 0 10-96 0zm158 228a96 96 0 10192 0 96 96 0 10-192 0zm148-314a56 56 0 10112 0 56 56 0 10-112 0z">
+                                        </path>
+                                    </svg></span>
+                                Analytic
+                            </a>
+                        </li>
+                        <li>
+
+                            <a href="#" class="d-flex"><span role="img" aria-label="fund"
+                                    class="anticon anticon-fund"><svg viewBox="64 64 896 896" focusable="false"
+                                        data-icon="fund" width="1em" height="1em" fill="currentColor"
+                                        aria-hidden="true">
+                                        <path
+                                            d="M926 164H94c-17.7 0-32 14.3-32 32v640c0 17.7 14.3 32 32 32h832c17.7 0 32-14.3 32-32V196c0-17.7-14.3-32-32-32zm-40 632H134V236h752v560zm-658.9-82.3c3.1 3.1 8.2 3.1 11.3 0l172.5-172.5 114.4 114.5c3.1 3.1 8.2 3.1 11.3 0l297-297.2c3.1-3.1 3.1-8.2 0-11.3l-36.8-36.8a8.03 8.03 0 00-11.3 0L531 565 416.6 450.5a8.03 8.03 0 00-11.3 0l-214.9 215a8.03 8.03 0 000 11.3l36.7 36.9z">
+                                        </path>
+                                    </svg></span>
+                                Sales
+                            </a>
+
+                        </li>
+
+                    </ul>
+                </div>
+                <div class="sidebar-menu">
+                    <div class="menu-head" style="margin-top: 20px;">
+                        <span>APPS</span>
+                    </div>
+                    <ul>
+                        <li>
+                            <a href="#" class="d-flex"><span role="img" aria-label="mail"
+                                    class="anticon anticon-mail"><svg viewBox="64 64 896 896" focusable="false"
+                                        data-icon="mail" width="1em" height="1em" fill="currentColor"
+                                        aria-hidden="true">
+                                        <path
+                                            d="M928 160H96c-17.7 0-32 14.3-32 32v640c0 17.7 14.3 32 32 32h832c17.7 0 32-14.3 32-32V192c0-17.7-14.3-32-32-32zm-40 110.8V792H136V270.8l-27.6-21.5 39.3-50.5 42.8 33.3h643.1l42.8-33.3 39.3 50.5-27.7 21.5zM833.6 232L512 482 190.4 232l-42.8-33.3-39.3 50.5 27.6 21.5 341.6 265.6a55.99 55.99 0 0068.7 0L888 270.8l27.6-21.5-39.3-50.5-42.7 33.2z">
+                                        </path>
+                                    </svg></span>
+                                Mail
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="d-flex">
+                                <span role="img" aria-label="message" class="anticon anticon-message"><svg
+                                        viewBox="64 64 896 896" focusable="false" data-icon="message" width="1em"
+                                        height="1em" fill="currentColor" aria-hidden="true">
+                                        <path
+                                            d="M464 512a48 48 0 1096 0 48 48 0 10-96 0zm200 0a48 48 0 1096 0 48 48 0 10-96 0zm-400 0a48 48 0 1096 0 48 48 0 10-96 0zm661.2-173.6c-22.6-53.7-55-101.9-96.3-143.3a444.35 444.35 0 00-143.3-96.3C630.6 75.7 572.2 64 512 64h-2c-60.6.3-119.3 12.3-174.5 35.9a445.35 445.35 0 00-142 96.5c-40.9 41.3-73 89.3-95.2 142.8-23 55.4-34.6 114.3-34.3 174.9A449.4 449.4 0 00112 714v152a46 46 0 0046 46h152.1A449.4 449.4 0 00510 960h2.1c59.9 0 118-11.6 172.7-34.3a444.48 444.48 0 00142.8-95.2c41.3-40.9 73.8-88.7 96.5-142 23.6-55.2 35.6-113.9 35.9-174.5.3-60.9-11.5-120-34.8-175.6zm-151.1 438C704 845.8 611 884 512 884h-1.7c-60.3-.3-120.2-15.3-173.1-43.5l-8.4-4.5H188V695.2l-4.5-8.4C155.3 633.9 140.3 574 140 513.7c-.4-99.7 37.7-193.3 107.6-263.8 69.8-70.5 163.1-109.5 262.8-109.9h1.7c50 0 98.5 9.7 144.2 28.9 44.6 18.7 84.6 45.6 119 80 34.3 34.3 61.3 74.4 80 119 19.4 46.2 29.1 95.2 28.9 145.8-.6 99.6-39.7 192.9-110.1 262.7z">
+                                        </path>
+                                    </svg></span>
+                                Chat
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="d-flex">
+                                <span role="img" aria-label="calendar" class="anticon anticon-calendar"><svg
+                                        viewBox="64 64 896 896" focusable="false" data-icon="calendar" width="1em"
+                                        height="1em" fill="currentColor" aria-hidden="true">
+                                        <path
+                                            d="M880 184H712v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H384v-64c0-4.4-3.6-8-8-8h-56c-4.4 0-8 3.6-8 8v64H144c-17.7 0-32 14.3-32 32v664c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V216c0-17.7-14.3-32-32-32zm-40 656H184V460h656v380zM184 392V256h128v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h256v48c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8v-48h128v136H184z">
+                                        </path>
+                                    </svg></span>
+                                Calender
+                            </a>
+                        </li>
+                        <div class="accordion" style="margin-top: -13px;" id="accordionPanelsStayOpenExample">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+                                    <button class="accordion-button" style="border: 0px solid red;"
+                                        data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne"
+                                        aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                                        <a href="#" class="d-flex">
+                                            <span style="padding-left: 6px; padding-right: 8px;" role="img"
+                                                aria-label="bulb" class="anticon anticon-bulb"><svg
+                                                    viewBox="64 64 896 896" focusable="false" data-icon="bulb"
+                                                    width="1em" height="1em" fill="currentColor" aria-hidden="true">
+                                                    <path
+                                                        d="M632 888H392c-4.4 0-8 3.6-8 8v32c0 17.7 14.3 32 32 32h192c17.7 0 32-14.3 32-32v-32c0-4.4-3.6-8-8-8zM512 64c-181.1 0-328 146.9-328 328 0 121.4 66 227.4 164 284.1V792c0 17.7 14.3 32 32 32h264c17.7 0 32-14.3 32-32V676.1c98-56.7 164-162.7 164-284.1 0-181.1-146.9-328-328-328zm127.9 549.8L604 634.6V752H420V634.6l-35.9-20.8C305.4 568.3 256 484.5 256 392c0-141.4 114.6-256 256-256s256 114.6 256 256c0 92.5-49.4 176.3-128.1 221.8z">
+                                                    </path>
+                                                </svg></span>
+
+                                            Project
+                                        </a>
+                                    </button>
+                                </h2>
+                                <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse "
+                                    aria-labelledby="panelsStayOpen-headingOne">
+                                    <div class="accordion-body">
+                                        <ul style="padding-top: 5px;">
+                                            <li><a href="#">List</a></li>
+                                            <li><a href="#">Scrumbord</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="accordion" style="margin-top: -13px;" id="accordionPanelsStayOpenExample">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="panelsStayOpen-headingOne1">
+                                    <button class="accordion-button" style="border: 0px solid red;"
+                                        data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne1"
+                                        aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                                        <a href="#" class="d-flex"><span role="img"
+                                                style="padding-left: 7px; padding-right: 6px;"
+                                                aria-label="shopping-cart" class="anticon anticon-shopping-cart"><svg
+                                                    viewBox="0 0 1024 1024" focusable="false" data-icon="shopping-cart"
+                                                    width="1em" height="1em" fill="currentColor" aria-hidden="true">
+                                                    <path
+                                                        d="M922.9 701.9H327.4l29.9-60.9 496.8-.9c16.8 0 31.2-12 34.2-28.6l68.8-385.1c1.8-10.1-.9-20.5-7.5-28.4a34.99 34.99 0 00-26.6-12.5l-632-2.1-5.4-25.4c-3.4-16.2-18-28-34.6-28H96.5a35.3 35.3 0 100 70.6h125.9L246 312.8l58.1 281.3-74.8 122.1a34.96 34.96 0 00-3 36.8c6 11.9 18.1 19.4 31.5 19.4h62.8a102.43 102.43 0 00-20.6 61.7c0 56.6 46 102.6 102.6 102.6s102.6-46 102.6-102.6c0-22.3-7.4-44-20.6-61.7h161.1a102.43 102.43 0 00-20.6 61.7c0 56.6 46 102.6 102.6 102.6s102.6-46 102.6-102.6c0-22.3-7.4-44-20.6-61.7H923c19.4 0 35.3-15.8 35.3-35.3a35.42 35.42 0 00-35.4-35.2zM305.7 253l575.8 1.9-56.4 315.8-452.3.8L305.7 253zm96.9 612.7c-17.4 0-31.6-14.2-31.6-31.6 0-17.4 14.2-31.6 31.6-31.6s31.6 14.2 31.6 31.6a31.6 31.6 0 01-31.6 31.6zm325.1 0c-17.4 0-31.6-14.2-31.6-31.6 0-17.4 14.2-31.6 31.6-31.6s31.6 14.2 31.6 31.6a31.6 31.6 0 01-31.6 31.6z">
+                                                    </path>
+                                                </svg></span>
+                                            E-Commerce
+                                        </a>
+                                    </button>
+                                </h2>
+                                <div id="panelsStayOpen-collapseOne1" class="accordion-collapse collapse "
+                                    aria-labelledby="panelsStayOpen-headingOne1">
+                                    <div class="accordion-body">
+                                        <ul style="padding-top: 5px;">
+
+                                            <li><a href="#">Product List</a></li>
+                                            <li><a href="#">Add Product</a></li>
+                                            <li><a href="#">Edit Product</a></li>
+                                            <li><a href="#">Oders</a></li>
+                                            <li><a href="#">List</a></li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </ul>
+                </div>
+                <!-- comoponents -->
+                <div class="sidebar-menu">
+                    <div class="menu-head" style="padding-top: 17PX;">
+                        <span>COMPONENTS</span>
+                    </div>
+                    <ul>
+                        <div class="accordion" style="margin-top: -13px;" id="accordionPanelsStayOpenExample">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="panelsStayOpen-headingOne2">
+                                    <button class="accordion-button" style="border: 0px solid red;"
+                                        data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne2"
+                                        aria-expanded="true" aria-controls="panelsStayOpen-collapseOne2">
+                                        <a href="#" class="d-flex">
+                                            <span style="padding-left: 7px; padding-right: 6px;" role="img"
+                                                aria-label="info-circle" class="anticon anticon-info-circle"><svg
+                                                    viewBox="64 64 896 896" focusable="false" data-icon="info-circle"
+                                                    width="1em" height="1em" fill="currentColor" aria-hidden="true">
+                                                    <path
+                                                        d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z">
+                                                    </path>
+                                                    <path
+                                                        d="M464 336a48 48 0 1096 0 48 48 0 10-96 0zm72 112h-48c-4.4 0-8 3.6-8 8v272c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V456c0-4.4-3.6-8-8-8z">
+                                                    </path>
+                                                </svg></span>
+
+                                            General
+                                        </a>
+                                    </button>
+                                </h2>
+                                <div id="panelsStayOpen-collapseOne2" class="accordion-collapse collapse "
+                                    aria-labelledby="panelsStayOpen-headingOne">
+                                    <div class="accordion-body">
+                                        <ul style="padding-top: 5px;">
+                                            <li><a href="#">Button</a></li>
+                                            <li><a href="#">icon</a></li>
+                                            <li><a href="#">Typography</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="accordion" style="margin-top: -13px;" id="accordionPanelsStayOpenExample">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="panelsStayOpen-headingOne3">
+                                    <button class="accordion-button" style="border: 0px solid red;"
+                                        data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne3"
+                                        aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                                        <a href="#" class="d-flex">
+                                            <span style="padding-left: 7px; padding-right: 6px;" role="img"
+                                                aria-label="layout" class="anticon anticon-layout"><svg
+                                                    viewBox="64 64 896 896" focusable="false" data-icon="layout"
+                                                    width="1em" height="1em" fill="currentColor" aria-hidden="true">
+                                                    <path
+                                                        d="M880 112H144c-17.7 0-32 14.3-32 32v736c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V144c0-17.7-14.3-32-32-32zm-696 72h136v656H184V184zm656 656H384V384h456v456zM384 320V184h456v136H384z">
+                                                    </path>
+                                                </svg></span>
+
+                                            Layout
+                                        </a>
+                                    </button>
+                                </h2>
+                                <div id="panelsStayOpen-collapseOne3" class="accordion-collapse collapse "
+                                    aria-labelledby="panelsStayOpen-headingOne3">
+                                    <div class="accordion-body">
+                                        <ul style="padding-top: 5px;">
+                                            <li><a href="#">Grid</a></li>
+                                            <li><a href="#">Layout</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="accordion" style="margin-top: -13px;" id="accordionPanelsStayOpenExample">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="panelsStayOpen-headingOne4">
+                                    <button class="accordion-button" style="border: 0px solid red;"
+                                        data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne4"
+                                        aria-expanded="true" aria-controls="panelsStayOpen-collapseOne4">
+                                        <a href="#" class="d-flex">
+                                            <span style="padding-left: 7px; padding-right: 6px;" role="img"
+                                                aria-label="compass" class="anticon anticon-compass"><svg
+                                                    viewBox="64 64 896 896" focusable="false" data-icon="compass"
+                                                    width="1em" height="1em" fill="currentColor" aria-hidden="true">
+                                                    <path
+                                                        d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372zm198.4-588.1a32 32 0 00-24.5.5L414.9 415 296.4 686c-3.6 8.2-3.6 17.5 0 25.7 3.4 7.8 9.7 13.9 17.7 17 3.8 1.5 7.7 2.2 11.7 2.2 4.4 0 8.7-.9 12.8-2.7l271-118.6 118.5-271a32.06 32.06 0 00-17.7-42.7zM576.8 534.4l26.2 26.2-42.4 42.4-26.2-26.2L380 644.4 447.5 490 422 464.4l42.4-42.4 25.5 25.5L644.4 380l-67.6 154.4zM464.4 422L422 464.4l25.5 25.6 86.9 86.8 26.2 26.2 42.4-42.4-26.2-26.2-86.8-86.9z">
+                                                    </path>
+                                                </svg></span>
+
+                                            Navigation
+                                        </a>
+                                    </button>
+                                </h2>
+                                <div id="panelsStayOpen-collapseOne4" class="accordion-collapse collapse "
+                                    aria-labelledby="panelsStayOpen-headingOne">
+                                    <div class="accordion-body">
+                                        <ul style="padding-top: 5px;">
+                                            <li><a href="#">Affix</a></li>
+                                            <li><a href="#">Breadcrumb</a></li>
+                                            <li><a href="#">Dropdown</a></li>
+                                            <li><a href="#">Menu</a></li>
+                                            <li><a href="#">Pagination</a></li>
+                                            <li><a href="#">Steps</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="accordion" style="margin-top: -13px;" id="accordionPanelsStayOpenExample">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="panelsStayOpen-headingOne5">
+                                    <button class="accordion-button" style="border: 0px solid red;"
+                                        data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne5"
+                                        aria-expanded="true" aria-controls="panelsStayOpen-collapseOne5">
+                                        <a href="#" class="d-flex">
+                                            <span style="padding-left: 7px; padding-right: 6px;" role="img"
+                                                aria-label="file-done" class="anticon anticon-file-done"><svg
+                                                    viewBox="64 64 896 896" focusable="false" data-icon="file-done"
+                                                    width="1em" height="1em" fill="currentColor" aria-hidden="true">
+                                                    <path
+                                                        d="M688 312v-48c0-4.4-3.6-8-8-8H296c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8h384c4.4 0 8-3.6 8-8zm-392 88c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8h184c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8H296zm376 116c-119.3 0-216 96.7-216 216s96.7 216 216 216 216-96.7 216-216-96.7-216-216-216zm107.5 323.5C750.8 868.2 712.6 884 672 884s-78.8-15.8-107.5-44.5C535.8 810.8 520 772.6 520 732s15.8-78.8 44.5-107.5C593.2 595.8 631.4 580 672 580s78.8 15.8 107.5 44.5C808.2 653.2 824 691.4 824 732s-15.8 78.8-44.5 107.5zM761 656h-44.3c-2.6 0-5 1.2-6.5 3.3l-63.5 87.8-23.1-31.9a7.92 7.92 0 00-6.5-3.3H573c-6.5 0-10.3 7.4-6.5 12.7l73.8 102.1c3.2 4.4 9.7 4.4 12.9 0l114.2-158c3.9-5.3.1-12.7-6.4-12.7zM440 852H208V148h560v344c0 4.4 3.6 8 8 8h56c4.4 0 8-3.6 8-8V108c0-17.7-14.3-32-32-32H168c-17.7 0-32 14.3-32 32v784c0 17.7 14.3 32 32 32h272c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8z">
+                                                    </path>
+                                                </svg></span>
+
+                                            Data Entry
+                                        </a>
+                                    </button>
+                                </h2>
+                                <div id="panelsStayOpen-collapseOne5" class="accordion-collapse collapse "
+                                    aria-labelledby="panelsStayOpen-headingOne">
+                                    <div class="accordion-body">
+                                        <ul style="padding-top: 5px;">
+
+                                            <li><a href="#">Auto Cmoplit</a></li>
+                                            <li><a href="#">Cheak box</a></li>
+                                            <li><a href="#">Cascader</a></li>
+                                            <li><a href="#">Date Picker</a></li>
+                                            <li><a href="#">From</a></li>
+                                            <li><a href="#">Input Number</a></li>
+                                            <li><a href="#">Iuput</a></li>
+                                            <li><a href="#">Menitions</a></li>
+                                            <li><a href="#">Rate</a></li>
+                                            <li><a href="#">Radio</a></li>
+                                            <li><a href="#">Switch</a></li>
+                                            <li><a href="#">Slider</a></li>
+                                            <li><a href="#">Tree Select</a></li>
+                                            <li><a href="#">Transfter</a></li>
+                                            <li><a href="#">Time picker</a></li>
+                                            <li><a href="#">Uplode</a></li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="accordion" style="margin-top: -13px;" id="accordionPanelsStayOpenExample">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="panelsStayOpen-headingOne6">
+                                    <button class="accordion-button" style="border: 0px solid red;"
+                                        data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne6"
+                                        aria-expanded="true" aria-controls="panelsStayOpen-collapseOne6">
+                                        <a href="#" class="d-flex">
+                                            <span style="padding-left: 7px; padding-right: 6px;" role="img"
+                                                aria-label="desktop" class="anticon anticon-desktop"><svg
+                                                    viewBox="64 64 896 896" focusable="false" data-icon="desktop"
+                                                    width="1em" height="1em" fill="currentColor" aria-hidden="true">
+                                                    <path
+                                                        d="M928 140H96c-17.7 0-32 14.3-32 32v496c0 17.7 14.3 32 32 32h380v112H304c-8.8 0-16 7.2-16 16v48c0 4.4 3.6 8 8 8h432c4.4 0 8-3.6 8-8v-48c0-8.8-7.2-16-16-16H548V700h380c17.7 0 32-14.3 32-32V172c0-17.7-14.3-32-32-32zm-40 488H136V212h752v416z">
+                                                    </path>
+                                                </svg></span>
+
+                                            Data Display
+                                        </a>
+                                    </button>
+                                </h2>
+                                <div id="panelsStayOpen-collapseOne6" class="accordion-collapse collapse "
+                                    aria-labelledby="panelsStayOpen-headingOne">
+                                    <div class="accordion-body">
+                                        <ul style="padding-top: 5px;">
+                                            <li><a href="#">Avtar</a></li>
+                                            <li><a href="#">Badge</a></li>
+                                            <li><a href="#">Callspace</a></li>
+                                            <li><a href="#">Carousle</a></li>
+                                            <li><a href="#">Card</a></li>
+                                            <li><a href="#">Calander</a></li>
+                                            <li><a href="#">Descripations</a></li>
+                                            <li><a href="#">Empty</a></li>
+                                            <li><a href="#">List</a></li>
+                                            <li><a href="#">Popover</a></li>
+                                            <li><a href="#">Statiscic</a></li>
+                                            <li><a href="#">Tree</a></li>
+                                            <li><a href="#">Tooltop</a></li>
+                                            <li><a href="#">Timeline</a></li>
+                                            <li><a href="#">Tag</a></li>
+                                            <li><a href="#">Tabel</a></li>
+                                            <li><a href="#">Tabs</a></li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="accordion" style="margin-top: -13px;" id="accordionPanelsStayOpenExample">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="panelsStayOpen-headingOne7">
+                                    <button class="accordion-button" style="border: 0px solid red;"
+                                        data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne7"
+                                        aria-expanded="true" aria-controls="panelsStayOpen-collapseOne7">
+                                        <a href="#" class="d-flex">
+                                            <span style="padding-left: 7px; padding-right: 6px;" role="img"
+                                                aria-label="comment" class="anticon anticon-comment"><svg
+                                                    viewBox="64 64 896 896" focusable="false" data-icon="comment"
+                                                    width="1em" height="1em" fill="currentColor" aria-hidden="true">
+                                                    <defs>
+                                                        <style></style>
+                                                    </defs>
+                                                    <path
+                                                        d="M573 421c-23.1 0-41 17.9-41 40s17.9 40 41 40c21.1 0 39-17.9 39-40s-17.9-40-39-40zm-280 0c-23.1 0-41 17.9-41 40s17.9 40 41 40c21.1 0 39-17.9 39-40s-17.9-40-39-40z">
+                                                    </path>
+                                                    <path
+                                                        d="M894 345a343.92 343.92 0 00-189-130v.1c-17.1-19-36.4-36.5-58-52.1-163.7-119-393.5-82.7-513 81-96.3 133-92.2 311.9 6 439l.8 132.6c0 3.2.5 6.4 1.5 9.4a31.95 31.95 0 0040.1 20.9L309 806c33.5 11.9 68.1 18.7 102.5 20.6l-.5.4c89.1 64.9 205.9 84.4 313 49l127.1 41.4c3.2 1 6.5 1.6 9.9 1.6 17.7 0 32-14.3 32-32V753c88.1-119.6 90.4-284.9 1-408zM323 735l-12-5-99 31-1-104-8-9c-84.6-103.2-90.2-251.9-11-361 96.4-132.2 281.2-161.4 413-66 132.2 96.1 161.5 280.6 66 412-80.1 109.9-223.5 150.5-348 102zm505-17l-8 10 1 104-98-33-12 5c-56 20.8-115.7 22.5-171 7l-.2-.1A367.31 367.31 0 00729 676c76.4-105.3 88.8-237.6 44.4-350.4l.6.4c23 16.5 44.1 37.1 62 62 72.6 99.6 68.5 235.2-8 330z">
+                                                    </path>
+                                                    <path
+                                                        d="M433 421c-23.1 0-41 17.9-41 40s17.9 40 41 40c21.1 0 39-17.9 39-40s-17.9-40-39-40z">
+                                                    </path>
+                                                </svg></span>
+
+                                            Feedback
+                                        </a>
+                                    </button>
+                                </h2>
+                                <div id="panelsStayOpen-collapseOne7" class="accordion-collapse collapse "
+                                    aria-labelledby="panelsStayOpen-headingOne">
+                                    <div class="accordion-body">
+                                        <ul style="padding-top: 5px; text-transform: capitalize;">
+                                            <li><a href="#">alart</a></li>
+                                            <li><a href="#">drawer</a></li>
+                                            <li><a href="#">modal</a></li>
+                                            <li><a href="#">massage</a></li>
+                                            <li><a href="#">notification</a></li>
+                                            <li><a href="#">proggress</a></li>
+                                            <li><a href="#">popconform</a></li>
+                                            <li><a href="#">result</a></li>
+                                            <li><a href="#">spin</a></li>
+                                            <li><a href="#">skeleton</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="accordion" style="margin-top: -13px;" id="accordionPanelsStayOpenExample">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="panelsStayOpen-headingOne8">
+                                    <button class="accordion-button" style="border: 0px solid red;"
+                                        data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne8"
+                                        aria-expanded="true" aria-controls="panelsStayOpen-collapseOne8">
+                                        <a href="#" class="d-flex">
+                                            <span style="padding-left: 7px; padding-right: 6px;" role="img"
+                                                aria-label="robot" class="anticon anticon-robot"><svg
+                                                    viewBox="64 64 896 896" focusable="false" data-icon="robot"
+                                                    width="1em" height="1em" fill="currentColor" aria-hidden="true">
+                                                    <path
+                                                        d="M300 328a60 60 0 10120 0 60 60 0 10-120 0zM852 64H172c-17.7 0-32 14.3-32 32v660c0 17.7 14.3 32 32 32h680c17.7 0 32-14.3 32-32V96c0-17.7-14.3-32-32-32zm-32 660H204V128h616v596zM604 328a60 60 0 10120 0 60 60 0 10-120 0zm250.2 556H169.8c-16.5 0-29.8 14.3-29.8 32v36c0 4.4 3.3 8 7.4 8h729.1c4.1 0 7.4-3.6 7.4-8v-36c.1-17.7-13.2-32-29.7-32zM664 508H360c-4.4 0-8 3.6-8 8v60c0 4.4 3.6 8 8 8h304c4.4 0 8-3.6 8-8v-60c0-4.4-3.6-8-8-8z">
+                                                    </path>
+                                                </svg></span>
+
+                                            Other
+                                        </a>
+                                    </button>
+                                </h2>
+                                <div id="panelsStayOpen-collapseOne8" class="accordion-collapse collapse "
+                                    aria-labelledby="panelsStayOpen-headingOne">
+                                    <div class="accordion-body">
+                                        <ul style="padding-top: 5px; text-transform: capitalize; ">
+                                            <li><a href="#">anchor</a></li>
+                                            <li><a href="#">back top</a></li>
+                                            <li><a href="#">config provider</a></li>
+                                            <li><a href="#">divider</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="accordion" style="margin-top: -13px;" id="accordionPanelsStayOpenExample">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="panelsStayOpen-headingOne9">
+                                    <button class="accordion-button" style="border: 0px solid red;"
+                                        data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne9"
+                                        aria-expanded="true" aria-controls="panelsStayOpen-collapseOne9">
+                                        <a href="#" class="d-flex">
+                                            <span style="padding-left: 7px; padding-right: 6px;" role="img"
+                                                aria-label="pie-chart" class="anticon anticon-pie-chart"><svg
+                                                    viewBox="64 64 896 896" focusable="false" data-icon="pie-chart"
+                                                    width="1em" height="1em" fill="currentColor" aria-hidden="true">
+                                                    <path
+                                                        d="M864 518H506V160c0-4.4-3.6-8-8-8h-26a398.46 398.46 0 00-282.8 117.1 398.19 398.19 0 00-85.7 127.1A397.61 397.61 0 0072 552a398.46 398.46 0 00117.1 282.8c36.7 36.7 79.5 65.6 127.1 85.7A397.61 397.61 0 00472 952a398.46 398.46 0 00282.8-117.1c36.7-36.7 65.6-79.5 85.7-127.1A397.61 397.61 0 00872 552v-26c0-4.4-3.6-8-8-8zM705.7 787.8A331.59 331.59 0 01470.4 884c-88.1-.4-170.9-34.9-233.2-97.2C174.5 724.1 140 640.7 140 552c0-88.7 34.5-172.1 97.2-234.8 54.6-54.6 124.9-87.9 200.8-95.5V586h364.3c-7.7 76.3-41.3 147-96.6 201.8zM952 462.4l-2.6-28.2c-8.5-92.1-49.4-179-115.2-244.6A399.4 399.4 0 00589 74.6L560.7 72c-4.7-.4-8.7 3.2-8.7 7.9V464c0 4.4 3.6 8 8 8l384-1c4.7 0 8.4-4 8-8.6zm-332.2-58.2V147.6a332.24 332.24 0 01166.4 89.8c45.7 45.6 77 103.6 90 166.1l-256.4.7z">
+                                                    </path>
+                                                </svg></span>
+                                            Charts
+                                        </a>
+                                    </button>
+                                </h2>
+                                <div id="panelsStayOpen-collapseOne9" class="accordion-collapse collapse "
+                                    aria-labelledby="panelsStayOpen-headingOne">
+                                    <div class="accordion-body">
+                                        <ul style="padding-top: 5px; text-transform: capitalize;">
+
+                                            <li><a href="#">apex charts</a></li>
+                                            <li><a href="#">chartsjs</a></li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="accordion" style="margin-top: -13px;" id="accordionPanelsStayOpenExample">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="panelsStayOpen-headingOne10">
+                                    <button class="accordion-button" style="border: 0px solid red;"
+                                        data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne10"
+                                        aria-expanded="true" aria-controls="panelsStayOpen-collapseOne10">
+                                        <a href="#" class="d-flex"><span style="padding-left: 7px; padding-right: 6px;"
+                                                role="img" aria-label="environment"
+                                                class="anticon anticon-environment"><svg viewBox="64 64 896 896"
+                                                    focusable="false" data-icon="environment" width="1em" height="1em"
+                                                    fill="currentColor" aria-hidden="true">
+                                                    <path
+                                                        d="M854.6 289.1a362.49 362.49 0 00-79.9-115.7 370.83 370.83 0 00-118.2-77.8C610.7 76.6 562.1 67 512 67c-50.1 0-98.7 9.6-144.5 28.5-44.3 18.3-84 44.5-118.2 77.8A363.6 363.6 0 00169.4 289c-19.5 45-29.4 92.8-29.4 142 0 70.6 16.9 140.9 50.1 208.7 26.7 54.5 64 107.6 111 158.1 80.3 86.2 164.5 138.9 188.4 153a43.9 43.9 0 0022.4 6.1c7.8 0 15.5-2 22.4-6.1 23.9-14.1 108.1-66.8 188.4-153 47-50.4 84.3-103.6 111-158.1C867.1 572 884 501.8 884 431.1c0-49.2-9.9-97-29.4-142zM512 880.2c-65.9-41.9-300-207.8-300-449.1 0-77.9 31.1-151.1 87.6-206.3C356.3 169.5 431.7 139 512 139s155.7 30.5 212.4 85.9C780.9 280 812 353.2 812 431.1c0 241.3-234.1 407.2-300 449.1zm0-617.2c-97.2 0-176 78.8-176 176s78.8 176 176 176 176-78.8 176-176-78.8-176-176-176zm79.2 255.2A111.6 111.6 0 01512 551c-29.9 0-58-11.7-79.2-32.8A111.6 111.6 0 01400 439c0-29.9 11.7-58 32.8-79.2C454 338.6 482.1 327 512 327c29.9 0 58 11.6 79.2 32.8C612.4 381 624 409.1 624 439c0 29.9-11.6 58-32.8 79.2z">
+                                                    </path>
+                                                </svg></span>
+                                            Map
+                                        </a>
+                                    </button>
+                                </h2>
+                                <div id="panelsStayOpen-collapseOne10" class="accordion-collapse collapse "
+                                    aria-labelledby="panelsStayOpen-headingOne1">
+                                    <div class="accordion-body">
+                                        <ul style="padding-top: 5px; text-transform: capitalize;">
+
+                                            <li><a href="#"> simple map</a></li>
+
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </ul>
+                </div>
+                <!-- pages÷ -->
+                <div class="sidebar-menu" style="text-transform: capitalize;">
+                    <div class="menu-head" style="padding-top: 17PX;">
+                        <span>Pages</span>
+                    </div>
+                    <ul>
+                        <div class="accordion" style="margin-top: -13px;" id="accordionPanelsStayOpenExample">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="panelsStayOpen-headingOne12">
+                                    <button class="accordion-button" style="border: 0px solid red;"
+                                        data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne12"
+                                        aria-expanded="true" aria-controls="panelsStayOpen-collapseOne12">
+                                        <a href="#" class="d-flex">
+                                            <span style="padding-left: 7px; padding-right: 6px;" role="img"
+                                                aria-label="file-text" class="anticon anticon-file-text"><svg
+                                                    viewBox="64 64 896 896" focusable="false" data-icon="file-text"
+                                                    width="1em" height="1em" fill="currentColor" aria-hidden="true">
+                                                    <path
+                                                        d="M854.6 288.6L639.4 73.4c-6-6-14.1-9.4-22.6-9.4H192c-17.7 0-32 14.3-32 32v832c0 17.7 14.3 32 32 32h640c17.7 0 32-14.3 32-32V311.3c0-8.5-3.4-16.7-9.4-22.7zM790.2 326H602V137.8L790.2 326zm1.8 562H232V136h302v216a42 42 0 0042 42h216v494zM504 618H320c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8h184c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8zM312 490v48c0 4.4 3.6 8 8 8h384c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8H320c-4.4 0-8 3.6-8 8z">
+                                                    </path>
+                                                </svg></span>
+                                            Pages
+                                        </a>
+                                    </button>
+                                </h2>
+                                <div id="panelsStayOpen-collapseOne12" class="accordion-collapse collapse "
+                                    aria-labelledby="panelsStayOpen-headingOne">
+                                    <div class="accordion-body">
+                                        <ul style="padding-top: 5px;" style="text-transform: capitalize;">
+                                            <li><a href="profile.html">profile</a></li>
+                                            <li><a href="#">user list</a></li>
+                                            <li><a href="#">invoince</a></li>
+                                            <li><a href="3">princing</a></li>
+                                            <li><a href="#">FAQ</a></li>
+                                            <li><a href="setting.html">setting</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+
+
+                        <div class="accordion" style="margin-top: -13px;" id="accordionPanelsStayOpenExample">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="panelsStayOpen-headingOne13">
+                                    <button class="accordion-button" style="border: 0px solid red;"
+                                        data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne13"
+                                        aria-expanded="true" aria-controls="panelsStayOpen-collapseOne13">
+                                        <a href="#" class="d-flex">
+                                            <span style="padding-left: 7px; padding-right: 6px;" role="img"
+                                                aria-label="safety" class="anticon anticon-safety"><svg
+                                                    viewBox="0 0 1024 1024" focusable="false" data-icon="safety"
+                                                    width="1em" height="1em" fill="currentColor" aria-hidden="true">
+                                                    <path
+                                                        d="M512 64L128 192v384c0 212.1 171.9 384 384 384s384-171.9 384-384V192L512 64zm312 512c0 172.3-139.7 312-312 312S200 748.3 200 576V246l312-110 312 110v330z">
+                                                    </path>
+                                                    <path
+                                                        d="M378.4 475.1a35.91 35.91 0 00-50.9 0 35.91 35.91 0 000 50.9l129.4 129.4 2.1 2.1a33.98 33.98 0 0048.1 0L730.6 434a33.98 33.98 0 000-48.1l-2.8-2.8a33.98 33.98 0 00-48.1 0L483 579.7 378.4 475.1z">
+                                                    </path>
+                                                </svg></span>
+
+                                            Authentication
+                                        </a>
+                                    </button>
+                                </h2>
+                                <div id="panelsStayOpen-collapseOne13" class="accordion-collapse collapse "
+                                    aria-labelledby="panelsStayOpen-headingOne">
+                                    <div class="accordion-body">
+                                        <ul style="padding-top: 5px; text-transform: capitalize;">
+                                            <li><a href="#">login 1</a></li>
+                                            <li><a href="#">login 2</a></li>
+                                            <li><a href="#">regrastation 1</a></li>
+                                            <li><a href="#">regrastation 2</a></li>
+                                            <li><a href="#">forget password</a></li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="accordion" style="margin-top: -13px;" id="accordionPanelsStayOpenExample">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="panelsStayOpen-headingOne18">
+                                    <button class="accordion-button" style="border: 0px solid red;"
+                                        data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne18"
+                                        aria-expanded="true" aria-controls="panelsStayOpen-collapseOne18">
+                                        <a href="#" class="d-flex">
+                                            <span style="padding-left: 7px; padding-right: 6px;" role="img"
+                                                aria-label="stop" class="anticon anticon-stop"><svg
+                                                    viewBox="64 64 896 896" focusable="false" data-icon="stop"
+                                                    width="1em" height="1em" fill="currentColor" aria-hidden="true">
+                                                    <path
+                                                        d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372 0-89 31.3-170.8 83.5-234.8l523.3 523.3C682.8 852.7 601 884 512 884zm288.5-137.2L277.2 223.5C341.2 171.3 423 140 512 140c205.4 0 372 166.6 372 372 0 89-31.3 170.8-83.5 234.8z">
+                                                    </path>
+                                                </svg></span>
+
+                                            errors
+                                        </a>
+                                    </button>
+                                </h2>
+                                <div id="panelsStayOpen-collapseOne18" class="accordion-collapse collapse "
+                                    aria-labelledby="panelsStayOpen-headingOne">
+                                    <div class="accordion-body">
+                                        <ul style="padding-top: 5px; text-transform: capitalize; ">
+                                            <li><a href="#">error page 1</a></li>
+                                            <li><a href="#">error page 2</a></li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                    </ul>
+                </div>
+                <div class="sidebar-menu">
+                    <div class="menu-head" style="padding-top: 17PX;">
+                        <span>DOCS</span>
+                    </div>
+                    <ul>
+                        <li>
+                            <a href="#" class="d-flex"><span style="padding-left: 0px; padding-right: 7px;" role="img"
+                                    aria-label="file-unknown" class="anticon anticon-file-unknown"><svg
+                                        viewBox="64 64 896 896" focusable="false" data-icon="file-unknown" width="1em"
+                                        height="1em" fill="currentColor" aria-hidden="true">
+                                        <path
+                                            d="M854.6 288.7L639.4 73.4c-6-6-14.2-9.4-22.7-9.4H192c-17.7 0-32 14.3-32 32v832c0 17.7 14.3 32 32 32h640c17.7 0 32-14.3 32-32V311.3c0-8.5-3.4-16.6-9.4-22.6zM790.2 326H602V137.8L790.2 326zm1.8 562H232V136h302v216a42 42 0 0042 42h216v494zM402 549c0 5.4 4.4 9.5 9.8 9.5h32.4c5.4 0 9.8-4.2 9.8-9.4 0-28.2 25.8-51.6 58-51.6s58 23.4 58 51.5c0 25.3-21 47.2-49.3 50.9-19.3 2.8-34.5 20.3-34.7 40.1v32c0 5.5 4.5 10 10 10h32c5.5 0 10-4.5 10-10v-12.2c0-6 4-11.5 9.7-13.3 44.6-14.4 75-54 74.3-98.9-.8-55.5-49.2-100.8-108.5-101.6-61.4-.7-111.5 45.6-111.5 103zm78 195a32 32 0 1064 0 32 32 0 10-64 0z">
+                                        </path>
+                                    </svg></span>
+                                Docuntation
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="d-flex">
+                                <span style="padding-left: 0px; padding-right: 7px;" role="img" aria-label="profile"
+                                    class="anticon anticon-profile"><svg viewBox="64 64 896 896" focusable="false"
+                                        data-icon="profile" width="1em" height="1em" fill="currentColor"
+                                        aria-hidden="true">
+                                        <path
+                                            d="M880 112H144c-17.7 0-32 14.3-32 32v736c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V144c0-17.7-14.3-32-32-32zm-40 728H184V184h656v656zM492 400h184c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8H492c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8zm0 144h184c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8H492c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8zm0 144h184c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8H492c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8zM340 368a40 40 0 1080 0 40 40 0 10-80 0zm0 144a40 40 0 1080 0 40 40 0 10-80 0zm0 144a40 40 0 1080 0 40 40 0 10-80 0z">
+                                        </path>
+                                    </svg></span>
+                                Channelvlog
+                            </a>
+                        </li>
+                        <li>
+
+                            <a href="#" class="d-flex"><span style="padding-left: 0px; padding-right: 7px;" role="img"
+                                    aria-label="fund" class="anticon anticon-fund"><svg viewBox="64 64 896 896"
+                                        focusable="false" data-icon="fund" width="1em" height="1em" fill="currentColor"
+                                        aria-hidden="true">
+                                        <path
+                                            d="M926 164H94c-17.7 0-32 14.3-32 32v640c0 17.7 14.3 32 32 32h832c17.7 0 32-14.3 32-32V196c0-17.7-14.3-32-32-32zm-40 632H134V236h752v560zm-658.9-82.3c3.1 3.1 8.2 3.1 11.3 0l172.5-172.5 114.4 114.5c3.1 3.1 8.2 3.1 11.3 0l297-297.2c3.1-3.1 3.1-8.2 0-11.3l-36.8-36.8a8.03 8.03 0 00-11.3 0L531 565 416.6 450.5a8.03 8.03 0 00-11.3 0l-214.9 215a8.03 8.03 0 000 11.3l36.7 36.9z">
+                                        </path>
+                                    </svg></span>
+                                Sales
+                            </a>
+
+                        </li>
+                        <li>
+
+                            <a href="#" class="d-flex"><span role="img" aria-label="fund"
+                                    class="anticon anticon-fund"><svg viewBox="64 64 896 896" focusable="false"
+                                        data-icon="fund" width="1em" height="1em" fill="currentColor"
+                                        aria-hidden="true">
+                                        <path
+                                            d="M926 164H94c-17.7 0-32 14.3-32 32v640c0 17.7 14.3 32 32 32h832c17.7 0 32-14.3 32-32V196c0-17.7-14.3-32-32-32zm-40 632H134V236h752v560zm-658.9-82.3c3.1 3.1 8.2 3.1 11.3 0l172.5-172.5 114.4 114.5c3.1 3.1 8.2 3.1 11.3 0l297-297.2c3.1-3.1 3.1-8.2 0-11.3l-36.8-36.8a8.03 8.03 0 00-11.3 0L531 565 416.6 450.5a8.03 8.03 0 00-11.3 0l-214.9 215a8.03 8.03 0 000 11.3l36.7 36.9z">
+                                        </path>
+                                    </svg></span>
+                                Sales
+                            </a>
+
+                        </li>
+
+
+
+
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+        <!-- <div class="main-content"> -->
+
+        <header class="">
+            <div class="row d-flex justify-content-start">
+                <div class="col-2">
+                    <div class="sidebar-brand">
+                        <div class="brand-flex">
+                            <img src="img/logo.svg" class="ps-4" style="margin-top: 15px;" alt=""
+                                style="width: 100px; height: 70px;">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-1 ms-4">
+                    <div class="menu-toggle">
+                        <label for="sidebar-toggle">
+                            <span>
+                                <svg style=" margin-top: 21px;" viewBox="64 64 896 896" focusable="false"
+                                    data-icon="menu-fold" width="1em" height="1em" fill="currentColor"
+                                    aria-hidden="true">
+                                    <path
+                                        d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 000 13.8z">
+                                    </path>
+                                </svg>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <form>
+                        <label for="default-search"
+                            class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+                        <div class="relative" style="margin-top: -10px;">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                                </svg>
+                            </div>
+                            <input type="search" id="default-search"
+                                style="padding: 10px 170px 10px 45px; margin-right: 200px;"
+                                class="block w-full mt-4 pl-10 text-sm  border border-gray-300 rounded-lg  focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500"
+                                placeholder="      Search..." required>
+
+                        </div>
+                    </form>
+                </div>
+                <div class="col-3">
+                    <button id="fullscreen-btn" style="position: absolute; top: 22px; left: 830px; font-size: 20px;">
+                        <i class="fa-solid fa-expand"></i>
+                    </button>
+
+                    <img src="img/har-moon.png" id="icon" alt="" style="position: absolute; top: 20px;">
+
+                </div>
+            </div>
+        </header>
+
+        <!-- main- content -->
+
+        <div class="main-content">
+            <div class="main">
+                <div class="row ">
+                    <div class="col-9">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="box">
+                                    <div class="up-down ps-3">
+                                        <h2>Revenue</h2>
+                                        <h3>$2,454 <span style="color: rgb(245, 130, 130);">-11.4 ↓</span></h3>
+
+                                        <p>Compare to last year (2019)</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="box">
+                                    <div class="up-down ps-3">
+                                        <h2>seles</h2>
+                                        <h3>$6,983 <span style="color: rgb(79, 179, 79);">8.2 ↑</span></h3>
+
+                                        <p>Compare to last year (2019)</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="box">
+                                    <div class="up-down ps-3">
+                                        <h2>Costes</h2>
+                                        <h3>$8,310 <span style="color: rgb(97, 171, 97);">0.7 ↑</span></h3>
+
+                                        <p>Compare to last year (2019)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="row">
+                            <div class="col-12">
+                                <div class="box">
+                                    <div id="chart-container">
+                                        <div id="chart"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div> -->
+                        <h2 id="h2">Add To Collection</h2>
+                        <!-- <table>
+                            <thead>
+                                <th>product name</th>
+                                <th>product dec</th>
+                                <th>product price</th>
+                            </thead>
+                            <tbody id="tbody">
+
+                            </tbody>
+                        </table> -->
+
+                        <div id="box">
+                            <p id="add">
+                                + add item here
+                            </p>
+                            <input type="text" id="pname" placeholder="add product name">
+                            <input type="text" id="pdec" placeholder="add product descripation">
+                            <input type="text" id="pprice" placeholder="product price">
+                            <button onclick="addProducts()" id="save">save</button>
+                        </div>
+                        <br><br><br>
+
+                        <!-- <input type="text" id="pnam">
+                        <input type="text" id="pdece">
+                        <input type="text" id="pr">
+                        <input type="hidden" id="index">
+                        <button onclick="update()">update</button>
+
+ -->
+                        <!-- Vertically centered modal -->
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal fade" id="myModal" tabindex="-1">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">UPDATE DETAILS</h5>
+                                            <!-- <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button> -->
+                                        </div>
+                                        <div class="modal-body">
+                                            <input type="text" id="pnam" placeholder="product name">
+                                            <input type="text" id="pdece">
+                                            <br><br><br>
+                                            <input type="text" id="pr">
+                                            <input type="hidden" id="index">
+                                            <button class="btn-update" onclick="update()">update</button>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"> ❌</button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+                    <div class="col-3">
+                        <div class="box">
+                            <div class="monthly">
+                                <h2 style="text-align: center;" class="pb-3">Monthly Target</h2>
+                                <div class="chart2-container">
+                                    <div id="chart2">
+
+                                    </div>
+                                </div>
+                                <p class="text-center fs-6 ps-4" style="opacity: 0.6;">You need abit more effort to <br>
+                                    hit
+                                    monthly target</p>
+                                <div class="btn btn-primary text-center mt-2 mb-2" style="margin-left: 80px;">Learn More
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-12">
+                        <div class="box">
+
+                            <h2 class="ms-2">Latest products</h2>
+                            <div class="dropdown d-flex justify-content-end"
+                                style="margin-top: -30px; margin-right: 20px;">
+                                <div class="" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    ...
+                                </div>
+                                <ul class="dropdown-menu insee" aria-labelledby="dropdownMenuButton1">
+                                    <li><a class="dropdown-item" href="#"><span class=""><span role="img"
+                                                    aria-label="reload" class="anticon anticon-reload"><svg
+                                                        style="display: inline-block;" viewBox="64 64 896 896"
+                                                        focusable="false" data-icon="reload" width="1em" height="1em"
+                                                        fill="currentColor" aria-hidden="true">
+                                                        <path
+                                                            d="M909.1 209.3l-56.4 44.1C775.8 155.1 656.2 92 521.9 92 290 92 102.3 279.5 102 511.5 101.7 743.7 289.8 932 521.9 932c181.3 0 335.8-115 394.6-276.1 1.5-4.2-.7-8.9-4.9-10.3l-56.7-19.5a8 8 0 00-10.1 4.8c-1.8 5-3.8 10-5.9 14.9-17.3 41-42.1 77.8-73.7 109.4A344.77 344.77 0 01655.9 829c-42.3 17.9-87.4 27-133.8 27-46.5 0-91.5-9.1-133.8-27A341.5 341.5 0 01279 755.2a342.16 342.16 0 01-73.7-109.4c-17.9-42.4-27-87.4-27-133.9s9.1-91.5 27-133.9c17.3-41 42.1-77.8 73.7-109.4 31.6-31.6 68.4-56.4 109.3-73.8 42.3-17.9 87.4-27 133.8-27 46.5 0 91.5 9.1 133.8 27a341.5 341.5 0 01109.3 73.8c9.9 9.9 19.2 20.4 27.8 31.4l-60.2 47a8 8 0 003 14.1l175.6 43c5 1.2 9.9-2.6 9.9-7.7l.8-180.9c-.1-6.6-7.8-10.3-13-6.2z">
+                                                        </path>
+                                                    </svg></span></span> &nbsp;&nbsp; Refresh</a></li>
+                                    <li><a class="dropdown-item" href="#"><span role="img" aria-label="printer"
+                                                class="anticon anticon-printer"><svg style="display: inline-block;"
+                                                    viewBox="64 64 896 896" focusable="false" data-icon="printer"
+                                                    width="1em" height="1em" fill="currentColor" aria-hidden="true">
+                                                    <path
+                                                        d="M820 436h-40c-4.4 0-8 3.6-8 8v40c0 4.4 3.6 8 8 8h40c4.4 0 8-3.6 8-8v-40c0-4.4-3.6-8-8-8zm32-104H732V120c0-4.4-3.6-8-8-8H300c-4.4 0-8 3.6-8 8v212H172c-44.2 0-80 35.8-80 80v328c0 17.7 14.3 32 32 32h168v132c0 4.4 3.6 8 8 8h424c4.4 0 8-3.6 8-8V772h168c17.7 0 32-14.3 32-32V412c0-44.2-35.8-80-80-80zM360 180h304v152H360V180zm304 664H360V568h304v276zm200-140H732V500H292v204H160V412c0-6.6 5.4-12 12-12h680c6.6 0 12 5.4 12 12v292z">
+                                                    </path>
+                                                </svg></span>&nbsp;&nbsp; Prient </a></li>
+                                    <li><a class="dropdown-item" href="#"><span role="img" aria-label="reload"
+                                                class="anticon anticon-reload"><svg style="display: inline-block;"
+                                                    viewBox="64 64 896 896" focusable="false" data-icon="reload"
+                                                    width="1em" height="1em" fill="currentColor" aria-hidden="true">
+                                                    <path
+                                                        d="M909.1 209.3l-56.4 44.1C775.8 155.1 656.2 92 521.9 92 290 92 102.3 279.5 102 511.5 101.7 743.7 289.8 932 521.9 932c181.3 0 335.8-115 394.6-276.1 1.5-4.2-.7-8.9-4.9-10.3l-56.7-19.5a8 8 0 00-10.1 4.8c-1.8 5-3.8 10-5.9 14.9-17.3 41-42.1 77.8-73.7 109.4A344.77 344.77 0 01655.9 829c-42.3 17.9-87.4 27-133.8 27-46.5 0-91.5-9.1-133.8-27A341.5 341.5 0 01279 755.2a342.16 342.16 0 01-73.7-109.4c-17.9-42.4-27-87.4-27-133.9s9.1-91.5 27-133.9c17.3-41 42.1-77.8 73.7-109.4 31.6-31.6 68.4-56.4 109.3-73.8 42.3-17.9 87.4-27 133.8-27 46.5 0 91.5 9.1 133.8 27a341.5 341.5 0 01109.3 73.8c9.9 9.9 19.2 20.4 27.8 31.4l-60.2 47a8 8 0 003 14.1l175.6 43c5 1.2 9.9-2.6 9.9-7.7l.8-180.9c-.1-6.6-7.8-10.3-13-6.2z">
+                                                    </path>
+                                                </svg></span> &nbsp;&nbsp; Export</a></li>
+                                </ul>
+                            </div>
+                            <div class="container" style="margin-top: 30px;">
+                                <div class="row">
+                                    <table class="table caption-top table-hover">
+                                        <thead class="table-light">
+
+                                            <thead>
+                                                <tr>
+                                                    <th class="bg-secondar" scope="col">product name</th>
+                                                    <th class="bg-secondar" scope="col">product description</th>
+                                                    <th class="bg-secondar" scope="col">product price</th>
+                                                    <th class="bg-secondar" scope="col">Editing</th>
+                                                </tr>
+                                            </thead>
+                                        <tbody id="tbody">
+
+
+                                        </tbody>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr style="margin-top: 30px;">
+                <div class="row" style="font-size: 15px; opacity: 0.6;">
+                    <div class="col-4">
+                        <p>Copyright © 2023 Emilus All rights reserved.</p>
+                    </div>
+                    <div class="col-5"></div>
+                    <div class="col-3">
+                        <p>Term & Conditions | Privacy & Policy</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <script src="js/apexcharts.js"></script>
+    <script>
+        const data1 = [23, 34, 12, 54, 12, 32, 12, 10, 5];
+        const data2 = [12, 24, 15, 40, 90, 56, 75, 46, 12];
+
+        var options = {
+            series: [
+                {
+                    name: ' Seasson Duration',
+                    data: data1,
+
+                },
+                {
+                    name: 'Pages Views',
+                    data: data2,
+                }
+            ],
+
+            chart: {
+                height: 470,
+                type: 'line',
+                animations: {
+                    enabled: true,
+                    easing: 'linear',
+                    dynamicAnimation: {
+                        speed: 1000
+                    }
+                },
+                toolbar: {
+                    show: false
+                },
+                zoom: {
+                    enabled: false
+                },
+                padding: {
+                    top: 20,
+                    right: 20,
+                    bottom: 20,
+                    left: 20
+                }
+            },
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                curve: 'smooth'
+            },
+            title: {
+                text: 'Unique Visitors',
+                align: 'left',
+                margin: 30,
+                style: {
+                    fontSize: '20px'
+                }
+            },
+            markers: {
+                size: 0
+            },
+            stroke: {
+                curve: 'smooth',
+                width: [3, 3]  // Adjust the thickness here
+            },
+            xaxis: {
+                categories: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'Auguest', 'September']
+            },
+            yaxis: {
+                min: 0,
+                max: 90,
+                tickAmount: 10,
+                labels: {
+                    show: true
+                },
+                axisTicks: {
+                    show: false
+                },
+                grid: {
+                    show: false  // This hides the horizontal grid lines
+                }
+            },
+            grid: {
+                xaxis: {
+                    lines: {
+                        show: false
+                    }
+                },
+                yaxis: {
+                    lines: {
+                        show: false  // This should hide the horizontal grid lines
+                    }
+                }
+            },
+            legend: {
+                show: true,
+                position: 'top',
+                horizontalAlign: 'right',
+                offsetY: -50,
+                fontSize: '16px', // this is the correct property for setting the font size
+                markers: {
+                    width: 12,
+                    height: 12,
+                }
+            }
+        };
+
+        var chartPrimary = new ApexCharts(document.querySelector("#chart"), options);
+        chartPrimary.render();
+
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <script>
+        var options = {
+            series: [87],
+
+            chart: {
+                height: 250,
+                type: 'radialBar',
+
+            },
+            colors: ['#0d6efd'],
+            plotOptions: {
+                radialBar: {
+                    hollow: {
+                        size: '80%',
+                    }
+                },
+            },
+            labels: ['Target'],
+            value: {
+                show: false,
+                fontSize: '40px',
+                // offsetY: -20,
+                formatter: function (val) {
+
+                }
+            }
+        };
+
+
+        var chartpie = new ApexCharts(document.querySelector("#chart2"), options);
+        chartpie.render();
+
+
+
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <script>
+        const data5 = [12, 45, 3, 89, 20, 92, 34, 90, 81];
+
+        var options = {
+            series: [
+                {
+                    data: data5
+                }
+            ],
+            chart: {
+                height: 170,
+                type: 'line',
+                animations: {
+                    enabled: true,
+                    easing: 'linear',
+                    dynamicAnimation: {
+                        speed: 1000
+                    }
+                },
+                toolbar: {
+                    show: false
+                },
+                zoom: {
+                    enabled: false
+                }
+            },
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                curve: 'smooth'
+            },
+            markers: {
+                size: 0
+            },
+            xaxis: {
+                categories: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'Auguest', 'September'],
+                labels: {
+                    show: false
+                },
+                axisBorder: {
+                    show: false
+                },
+                lines: {
+                    show: false  // This should hide the horizontal grid lines
+                },
+                axisTicks: {
+                    show: false
+                }
+            },
+            yaxis: {
+                labels: {
+                    show: false
+                },
+                axisBorder: {
+                    show: false
+                },
+                axisTicks: {
+                    show: false
+                },
+                lines: {
+                    show: false  // This should hide the horizontal grid lines
+                }
+
+            },
+            stroke: {
+                curve: 'smooth',
+                width: 3,  // This determines the width of the line
+                colors: ['#23D145']  // Dark blue color
+            },
+            grid: {
+                show: false
+            },
+        };
+
+        var chartSecondory = new ApexCharts(document.querySelector("#chart3"), options);
+        chartSecondory.render();
+
+    </script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/flowbite.min.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script>
+        function toggleChartColorMode(mode) {
+            if (mode === 'DARK') {
+                console.log('toggleChartColorMode dark mode');
+                const chartColorOptions = {
+                    fill: {
+                        colors: ['#1a83ff']  // A lighter color for dark mode
+                    },
+
+                    xaxis: {
+                        labels: {
+                            style: {
+                                colors: '#f3f4f6'  // Light text for dark mode
+                            }
+                        }
+                    },
+                    title: {
+                        style: {
+                            color: '#f3f4f6'  // Light text for dark mode
+                        }
+                    },
+                    markers: {
+                        colors: ['#23D145', '#1a83ff']  // Light mode colors
+                    },
+                    dataLabels: {
+                        style: {
+                            colors: ['#333', '#333']  // Dark text for light mode
+                        }
+                    },
+                    legend: {
+                        labels: {
+                            colors: ['#333', '#333']  // Dark text for light mode
+                        }
+                    },
+                    yaxis: {
+                        labels: {
+                            style: {
+                                colors: '#f3f4f6'  // Light text for dark mode
+                            }
+                        }
+                    }
+
+                }
+                const pie = {
+
+                }
+                chartPrimary.updateOptions(chartColorOptions);
+                chartSecondory.updateOptions(chartColorOptions);
+                chartpie.updateOptions(pie)
+            } else {
+                console.log('toggleChartColorMode light mode');
+                const chartColorOptions = {
+                    fill: {
+                        colors: ['#000000']  // Original color for light mode
+                    },
+                    xaxis: {
+                        labels: {
+                            style: {
+                                colors: '#333'  // Dark text for light mode
+                            }
+                        }
+                    },
+
+                    yaxis: {
+                        labels: {
+                            style: {
+                                colors: '#333'  // Dark text for light mode
+                            }
+                        }
+                    },
+
+                    title: {
+                        style: {
+                            color: '#000'  // Light text for dark mode
+                        }
+                    },
+                }
+                const pie = {
+
+
+                }
+                chartPrimary.updateOptions(chartColorOptions);
+                chartSecondory.updateOptions(chartColorOptions);
+                chartpie.updateOptions(pie)
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var icon = document.getElementById("icon");
+
+            function toggleMode() {
+                console.log("toggleMode function called")
+                var logo = document.getElementById("logoo");
+                if (!localStorage.getItem("mode")) {
+                    localStorage.setItem("mode", "LIGHT");
+                }
+                console.log("localStorage.getItem('mode')", localStorage.getItem("mode"))
+                const modeName = localStorage.getItem("mode");
+                if (modeName === "DARK") {
+                    document.body.classList.add('dark-theam');
+                    console.log("toggleMode DARK")
+                    icon.src = "img/sun.jpeg"
+                    logo.src = "img/logo-white.png"
+                    toggleChartColorMode('DARK')
+                    // var labelElements = document.querySelectorAll("#SvgjsText2048");
+                    // labelElements.style.fill = '#fff !important'
+                    var labelElements = document.querySelectorAll(".apexcharts-datalabels-group .apexcharts-text.apexcharts-datalabel-value");
+
+                    // Loop through the NodeList and change the fill color of each element
+                    labelElements.forEach(function (element) {
+                        element.style.fill = "red !important";
+                    });
+                } else if (modeName === "LIGHT") {
+                    document.body.classList.remove('dark-theam');
+                    console.log("toggleMode LIGHT")
+                    icon.src = "img/har-moon.png"
+                    // logo.src = "img/logo.png"
+                    toggleChartColorMode('LIGHT')
+                    // var labelElements = document.querySelectorAll(".apexcharts-datalabels-group .apexcharts-text.apexcharts-datalabel-value");
+                    // labelElements.style.fill = '#000 !important'
+                    var labelElements = document.querySelectorAll(".apexcharts-datalabels-group .apexcharts-text.apexcharts-datalabel-value");
+
+                    // Loop through the NodeList and change the fill color of each element
+                    labelElements.forEach(function (element) {
+                        element.style.fill = "red !important";
+                    });
+                } else {
+                    console.log("toggleMode none")
+                }
+                return;
+            }
+
+            icon.onclick = function () {
+                // document.body.classList.toggle("dark-theam");
+                const currentMode = localStorage.getItem("mode") || "LIGHT";
+                if (currentMode === "DARK") {
+                    localStorage.setItem("mode", "LIGHT")
+                } else {
+                    localStorage.setItem("mode", "DARK")
+                }
+                toggleMode();
+            }
+
+            // Initialize theme on page load
+            toggleMode();
+        });
+
+    </script>
+    <script>
+        function showLoader() {
+            document.getElementById('loader').style.display = 'block';
+        }
+
+        function hideLoader() {
+            document.getElementById('loader').style.display = 'none';
+        }
+        showLoader();
+
+        // Simulate a delay or an async operation (like an AJAX request)
+        setTimeout(() => {
+            hideLoader();
+        }, 2500);
+
+    </script>
+    <!-- <script>
+        $(function (){
+            $(window).on('beforeunload', function(){
+                return 'Are you sure you want to leave this site?';
+            });
+        });
+    </script> -->
+    <script>
+        $(document).ready(function () {
+            $('#fullscreen-btn').click(function () {
+                let elem = document.getElementById('admin-panel');
+
+                // Check if we're already in fullscreen
+                if (!document.fullscreenElement) {
+                    console.log('full screen')
+                    elem.style.overflowY = 'auto';
+                    if (elem.requestFullscreen) {
+                        elem.requestFullscreen();
+                    } else if (elem.mozRequestFullScreen) { /* Firefox */
+                        elem.mozRequestFullScreen();
+                    } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+                        elem.webkitRequestFullscreen();
+                    } else if (elem.msRequestFullscreen) { /* IE/Edge */
+                        elem.msRequestFullscreen();
+                    }
+                } else {
+                    console.log('small screen')
+                    elem.style.overflowY = '';
+                    if (document.exitFullscreen) {
+                        document.exitFullscreen();
+                    } else if (document.mozCancelFullScreen) { /* Firefox */
+                        document.mozCancelFullScreen();
+                    } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
+                        document.webkitExitFullscreen();
+                    } else if (document.msExitFullscreen) { /* IE/Edge */
+                        document.msExitFullscreen();
+                    }
+                }
+            });
+        });
+
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <script>
+
+        function getProductList() {
+            const productlist = JSON.parse(localStorage.getItem("productlist")) || []
+            return productlist
+        }
+        function setProductList(productlist) {
+            localStorage.setItem("productlist", JSON.stringify(productlist))
+        }
+        function emptyValue() {
+            document.getElementById("pname").value = '';
+            document.getElementById("pdec").value = '';
+            document.getElementById("pprice").value = '';
+        }
+        function addProducts() {
+            let getlist = getProductList()
+            console.log(getlist, "getlist");
+            let productname = document.getElementById("pname").value;
+            let productdec = document.getElementById("pdec").value;
+            let productprice = document.getElementById("pprice").value;
+            const productData = {
+                productname: productname,
+                productdec: productdec,
+                productprice: productprice,
+                id: new Date().getTime().toString()
+            }
+            getlist.push(productData)
+            setProductList(getlist)
+            displayData()
+            emptyValue()
+        }
+        function displayData() {
+            let getlist = getProductList()
+            let tablelisthtml = ''
+            for (let i = 0; i < getlist.length; i++) {
+                let list = getlist[i]
+                let tablelhtml = `<tr><td>${list.productname}</td><td>${list.productdec}</td><td>${list.productprice}</td><td><button onclick="removeProduct(${list.id})">remove</button></td><td><button onclick="viewData(${list.id})">edit</button></td></tr>`
+                tablelisthtml = tablelisthtml + tablelhtml
+            }
+            document.getElementById("tbody").innerHTML = tablelisthtml;
+        }
+
+        function removeProduct(id) {
+            let getlist = getProductList()
+            let updatedlist = getlist.filter((list) => {
+                return list.id != id
+            })
+            setProductList(updatedlist)
+            displayData()
+        }
+
+        function viewData(id) {
+            let getlist = getProductList()
+            let product = getlist.find((a) => {
+                return a.id.toString() === id.toString()
+            })
+            if (product) {
+                document.getElementById("pnam").value = product.productname
+                document.getElementById("pdece").value = product.productdec
+                document.getElementById("pr").value = product.productprice
+                document.getElementById("index").value = id
+                let myModal = new bootstrap.Modal(document.getElementById('myModal'), {
+                    keyboard: false
+                });
+                myModal.show();
+            }
+        }
+
+        function update() {
+            let getlist = getProductList()
+            let name = document.getElementById("pnam").value;
+            let dec = document.getElementById("pdece").value;
+            let price = document.getElementById("pr").value;
+            let id = document.getElementById("index").value
+            const updatedProduct = {
+                productname: name,
+                productdec: dec,
+                productprice: price,
+                id: id
+            }
+            const updatedList = getlist.map((p) => {
+                if (p.id === id) {
+                    return updatedProduct;
+                }
+                return p;
+            })
+            setProductList(updatedList)
+            displayData()
+
+            let myModalElement = document.getElementById('myModal');
+            let myModalInstance = bootstrap.Modal.getInstance(myModalElement);
+            if (myModalInstance) {
+                myModalInstance.hide();
+            }
+        }
+
+        displayData()
+    </script>
+
+
+</body>
+
+</html>

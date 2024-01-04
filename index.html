@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOG IN</title>
+    <!-- font -->
+    <link rel="stylesheet" href="css/font.css">
+    <!-- icon -->
+    <link rel="stylesheet" href="css/all.css">
+    <!-- favicon -->
+    <link rel="shortcut icon" href="image/icons8-nfc-logo-48.png" type="image/x-icon">
+    <!-- boostrap -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- css -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+
+
+<style>
+    body {
+        background: rgb(254, 254, 254);
+    }
+
+    .box1 {
+        background: rgba(255, 255, 255, 0.2);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        backdrop-filter: blur(12.5px);
+        -webkit-backdrop-filter: blur(12.5px);
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        width: 500px;
+        margin: 100px 450px;
+
+        height: 600px;
+    }
+
+    .box1 i {
+        font-size: 60px;
+        text-align: center;
+        margin-top: -32px;
+        margin-left: 220px;
+    }
+
+    h1 {
+        text-align: center;
+        margin-top: 30px;
+        color: rgb(84, 39, 39);
+
+    }
+
+    input {
+        border: 0px;
+        border-bottom: 1px solid black;
+        background-color: transparent;
+        margin: 70px 0px 0px 70px;
+        padding-right: 100px;
+        letter-spacing: 1px;
+        font-size: 20px;
+        text-transform: capitalize;
+        opacity: 0.6;
+        margin-bottom: 13px;
+    }
+
+    span {
+        margin-top: 20px;
+        color: rgb(68, 68, 255);
+    }
+
+    button {
+        padding: 1px 40px;
+        margin-top: 80px;
+        margin-left: 173px;
+        background: rgb(8, 36, 0);
+        background: radial-gradient(circle, rgba(8, 36, 0, 1) 0%, rgba(235, 162, 152, 1) 0%, rgba(119, 184, 185, 1) 100%, rgba(117, 224, 36, 1) 100%, rgba(224, 109, 67, 1) 100%, rgba(35, 177, 50, 1) 100%, rgba(176, 224, 167, 1) 100%, rgba(124, 56, 122, 1) 100%, rgba(209, 26, 26, 1) 100%, rgba(177, 222, 210, 1) 100%, rgba(139, 196, 143, 1) 100%, rgba(96, 63, 21, 1) 100%, rgba(215, 237, 216, 1) 100%);
+        border-radius: 12px;
+        text-transform: capitalize;
+    }
+
+   
+</style>
+
+<body>
+
+    <div class="box1">
+        <i class="fa-solid fa-user "></i>
+        <h1>Login Form</h1>
+        <p style=" font-size: 20px; color: rgb(245, 59, 59);text-transform: capitalize; margin-left: 140px;
+        margin-top: 49px;" id="demo"></p>
+
+        <input type="text" placeholder="enter username" id="name">
+
+        <input type="password" style="margin-top: 40px;" placeholder="enter password" id="password">
+        <br>
+        <span style="margin-left: 69px;">sign in</span>
+        <span style="margin-left: 145px;">forget password?</span>
+        <br>
+        <button type="button" onclick="checkdata()">login</button>
+    </div>
+
+    <Script>
+        function checkdata() {
+            let name = document.getElementById("name").value;
+            let password = document.getElementById("password").value;
+            if (name == '') {
+                document.getElementById("demo").innerHTML = "enter username*"
+
+            }
+
+
+            if (password == '') {
+                document.getElementById("demo").innerHTML = "enter password*"
+
+            }
+            if (name != "khyati" || password != "12345") {
+                document.getElementById("demo").innerHTML = "enter currect details*"
+
+            }
+            else if (name === "khyati" && password === "12345") {
+                window.location.href = "./admin/admin.html"
+
+            }
+            if (name != "soni" || password != "123") {
+                document.getElementById("demo").innerHTML = "enter currect details*"
+
+            }
+            else if (name === "soni" && password === "123") {
+                window.location.href = "./user/user.html"
+
+            }
+
+            document.getElementById("name").value = '';
+            document.getElementById("password").value = ''
+        }
+
+    </Script>
+
+
+
+
+    <script src="js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

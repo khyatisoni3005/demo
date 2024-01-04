@@ -1,0 +1,9 @@
+/*! @version pwa-studio: 0.0.1, @magento/venia-ui: ~10.1.0, @magento/upward-security-headers: ~1.0.13, @magento/pwa-theme-venia: ~1.4.0, @magento/pwa-buildpack: ~11.4.1, @magento/peregrine: ~13.0.1, @magento/pagebuilder: ~8.1.0, @magento/eslint-config: ~1.5.0, @magento/babel-preset-peregrine: ~1.2.2, @apollo/client: ~3.5.0 */
+(window.webpackJsonp=window.webpackJsonp||[]).push([[79],{"6Q3T":function(r,t,i){"use strict"
+var n=i("JPst"),o=i.n(n)()(function(r){return r[1]})
+o.push([r.i,".divider-hr-SSX {\n    border: 0;\n    border-top: 1px solid #cccccc;\n    display: inline-block;\n    margin-bottom: 20px;\n    margin-top: 20px;\n    max-width: 100%;\n    width: 100%;\n}\n",""]),o.locals={hr:"divider-hr-SSX"},t.a=o},"7AvV":function(r,t,i){"use strict"
+i.r(t),i.d(t,"default",function(){return h})
+var n=i("q1tI"),o=i.n(n),e=i("LboF"),s=i.n(e),d=i("6Q3T"),a={injectType:"singletonStyleTag",insert:"head",singleton:!0},g=(s()(d.a,a),d.a.locals||{}),p=i("y1Xp"),c=i("17x9"),l=r=>{var t=Object(p.a)(g,r.classes),{width:i,color:n,thickness:e,textAlign:s,border:d,borderColor:a,borderWidth:c,borderRadius:l,marginTop:h,marginRight:m,marginBottom:b,marginLeft:u,paddingTop:f,paddingRight:w,paddingBottom:T,paddingLeft:R,cssClasses:v=[]}=r,x={textAlign:s,border:d,borderColor:a,borderWidth:c,borderRadius:l,marginTop:h,marginRight:m,marginBottom:b,marginLeft:u,paddingTop:f,paddingRight:w,paddingBottom:T,paddingLeft:R},y={width:i,borderColor:n,borderWidth:e}
+return o.a.createElement("div",{style:x,className:v.join(" ")},o.a.createElement("hr",{style:y,className:t.hr}))}
+l.propTypes={classes:Object(c.shape)({hr:c.string}),width:c.string,color:c.string,thickness:c.string,textAlign:c.string,border:c.string,borderColor:c.string,borderWidth:c.string,borderRadius:c.string,marginTop:c.string,marginRight:c.string,marginBottom:c.string,marginLeft:c.string,paddingTop:c.string,paddingRight:c.string,paddingBottom:c.string,cssClasses:Object(c.arrayOf)(c.string)}
+var h=l}}])
